@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="日迹——一个简洁、私人的本地生活记录网页。"
+      content="日迹——一个只记录日期和文字的生活记录网页。"
     />
     <title>日迹 · 生活记录</title>
     <link rel="stylesheet" href="./styles.css" />
@@ -18,15 +18,16 @@
           <span>日迹</span>
         </a>
 
-        <button
-          class="quiet-button"
-          id="backupButton"
-          type="button"
-          aria-expanded="false"
-          aria-controls="backupPanel"
-        >
-          数据备份
-        </button>
+        <nav class="header-actions" aria-label="记录操作">
+          <a
+            class="quiet-button"
+            href="https://github.com/songsiyi2024/life-records-draft/edit/main/records.js"
+            target="_blank"
+            rel="noreferrer"
+          >
+            编辑记录
+          </a>
+        </nav>
       </header>
 
       <main>
@@ -39,36 +40,33 @@
             </p>
           </div>
 
-          <button class="primary-button" id="openComposerButton" type="button">
-            <span aria-hidden="true">＋</span>
+          <a
+            class="primary-button"
+            href="https://github.com/songsiyi2024/life-records-draft/edit/main/records.js"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span aria-hidden="true">✎</span>
             写一条记录
-          </button>
+          </a>
         </section>
 
-        <section
-          class="backup-panel"
-          id="backupPanel"
-          aria-label="数据备份"
-          hidden
-        >
+        <section class="github-panel" aria-label="记录方式说明">
+          <div class="privacy-mark" aria-hidden="true">GITHUB</div>
           <div>
-            <strong>记录只保存在这个浏览器中</strong>
-            <p>建议偶尔导出备份。以后换电脑时，可以再导入回来。</p>
+            <strong>文字直接保存在仓库的 records.js</strong>
+            <p>
+              点击“写一条记录”，在文件最前面加上日期和文字并提交，网页就会更新。
+            </p>
           </div>
-          <div class="backup-actions">
-            <button class="secondary-button" id="exportButton" type="button">
-              导出备份
-            </button>
-            <button class="secondary-button" id="importButton" type="button">
-              导入备份
-            </button>
-            <input
-              id="importInput"
-              type="file"
-              accept="application/json,.json"
-              hidden
-            />
-          </div>
+          <a
+            class="secondary-button"
+            href="https://github.com/songsiyi2024/life-records-draft/blob/main/records.js"
+            target="_blank"
+            rel="noreferrer"
+          >
+            查看记录文件
+          </a>
         </section>
 
         <section class="records-section" aria-labelledby="recordsTitle">
@@ -79,7 +77,9 @@
             </div>
 
             <label class="search-box">
-              <span class="visually-hidden">搜索记录</span>
+              <span class="visually-hidden">
+                搜索记录
+              </span>
               <span aria-hidden="true">⌕</span>
               <input
                 id="searchInput"
@@ -95,14 +95,15 @@
           <div class="empty-state" id="emptyState" hidden>
             <span class="empty-date" id="emptyDate" aria-hidden="true"></span>
             <h3>这里还没有记录</h3>
-            <p>从今天开始就好，不需要补齐过去。</p>
-            <button
+            <p>打开 records.js，写下第一条日期和文字。</p>
+            <a
               class="text-button"
-              id="emptyComposerButton"
-              type="button"
+              href="https://github.com/songsiyi2024/life-records-draft/edit/main/records.js"
+              target="_blank"
+              rel="noreferrer"
             >
               写下第一条记录 →
-            </button>
+            </a>
           </div>
 
           <div class="empty-state compact" id="searchEmptyState" hidden>
@@ -118,67 +119,7 @@
       </footer>
     </div>
 
-    <dialog class="composer" id="composerDialog">
-      <form class="composer-card" id="recordForm">
-        <div class="composer-heading">
-          <div>
-            <p class="section-kicker">A NEW MOMENT</p>
-            <h2 id="composerTitle">写一条记录</h2>
-          </div>
-          <button
-            class="icon-button"
-            id="closeComposerButton"
-            type="button"
-            aria-label="关闭"
-          >
-            ×
-          </button>
-        </div>
-
-        <input id="recordId" type="hidden" />
-
-        <label class="field">
-          <span>日期</span>
-          <input id="recordDate" type="date" required />
-        </label>
-
-        <label class="field">
-          <span>简单描述</span>
-          <textarea
-            id="recordDescription"
-            rows="6"
-            maxlength="1000"
-            placeholder="今天去了哪里，做了什么？"
-            required
-          ></textarea>
-          <small><span id="characterCount">0</span> / 1000</small>
-        </label>
-
-        <div class="composer-actions">
-          <button
-            class="secondary-button danger-button"
-            id="deleteButton"
-            type="button"
-            hidden
-          >
-            删除
-          </button>
-          <div class="composer-actions-right">
-            <button
-              class="secondary-button"
-              id="cancelButton"
-              type="button"
-            >
-              取消
-            </button>
-            <button class="primary-button" type="submit">保存记录</button>
-          </div>
-        </div>
-      </form>
-    </dialog>
-
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
+    <script src="./records.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>

@@ -28,18 +28,18 @@ body {
   color: var(--ink);
   background:
     radial-gradient(circle at 10% 8%, rgba(198, 83, 53, 0.1), transparent 26rem),
-    linear-gradient(90deg, transparent 49.8%, rgba(32, 35, 31, 0.035) 50%, transparent 50.2%),
+    linear-gradient(
+      90deg,
+      transparent 49.8%,
+      rgba(32, 35, 31, 0.035) 50%,
+      transparent 50.2%
+    ),
     var(--paper);
 }
 
 button,
-input,
-textarea {
+input {
   font: inherit;
-}
-
-button {
-  color: inherit;
 }
 
 button,
@@ -85,24 +85,26 @@ a {
   transform: rotate(-4deg);
 }
 
+.header-actions {
+  display: flex;
+  gap: 22px;
+}
+
 .quiet-button,
-.text-button,
-.icon-button {
-  padding: 0;
-  border: 0;
+.text-button {
+  color: var(--muted);
   background: transparent;
-  cursor: pointer;
+  border: 0;
+  text-decoration: none;
 }
 
 .quiet-button {
   padding: 9px 0;
-  color: var(--muted);
   border-bottom: 1px solid transparent;
   font-size: 14px;
 }
 
-.quiet-button:hover,
-.quiet-button[aria-expanded="true"] {
+.quiet-button:hover {
   color: var(--ink);
   border-bottom-color: var(--ink);
 }
@@ -137,7 +139,7 @@ a {
 }
 
 .hero-copy {
-  max-width: 560px;
+  max-width: 610px;
   margin: 30px 0 0;
   color: var(--muted);
   font-size: 17px;
@@ -152,7 +154,7 @@ a {
   min-height: 48px;
   padding: 0 20px;
   border-radius: 999px;
-  cursor: pointer;
+  text-decoration: none;
   transition:
     transform 160ms ease,
     background-color 160ms ease,
@@ -174,6 +176,7 @@ a {
 }
 
 .secondary-button {
+  flex: 0 0 auto;
   color: var(--ink);
   background: transparent;
   border: 1px solid var(--line);
@@ -184,38 +187,43 @@ a {
   border-color: rgba(32, 35, 31, 0.32);
 }
 
-.backup-panel {
+.github-panel {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 28px;
-  padding: 24px 28px;
+  gap: 24px;
+  padding: 26px 28px;
   margin: -34px 0 64px;
   background: rgba(232, 224, 211, 0.62);
   border: 1px solid var(--line);
   border-radius: 18px;
 }
 
-.backup-panel[hidden] {
-  display: none;
+.privacy-mark {
+  flex: 0 0 auto;
+  padding: 7px 9px;
+  color: var(--green);
+  border: 1px solid rgba(48, 77, 64, 0.35);
+  border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
 }
 
-.backup-panel strong {
+.github-panel > div:nth-child(2) {
+  flex: 1;
+}
+
+.github-panel strong {
   font-family: "Noto Serif SC", "Songti SC", serif;
   font-size: 18px;
 }
 
-.backup-panel p {
+.github-panel p {
   margin: 7px 0 0;
   color: var(--muted);
   font-size: 14px;
-  line-height: 1.6;
-}
-
-.backup-actions {
-  display: flex;
-  flex: 0 0 auto;
-  gap: 10px;
+  line-height: 1.7;
 }
 
 .records-section {
@@ -231,13 +239,11 @@ a {
   margin-bottom: 56px;
 }
 
-.section-heading .section-kicker,
-.composer-heading .section-kicker {
+.section-heading .section-kicker {
   margin-bottom: 10px;
 }
 
-.section-heading h2,
-.composer-heading h2 {
+.section-heading h2 {
   margin: 0;
   font-family: "Noto Serif SC", "Songti SC", serif;
   font-size: 36px;
@@ -249,7 +255,7 @@ a {
   display: flex;
   align-items: center;
   gap: 10px;
-  width: min(300px, 100%);
+  width: min(330px, 100%);
   padding: 12px 0;
   color: var(--muted);
   border-bottom: 1px solid var(--line);
@@ -322,7 +328,7 @@ a {
 .record-card {
   position: relative;
   display: grid;
-  grid-template-columns: 104px minmax(0, 1fr) auto;
+  grid-template-columns: 104px minmax(0, 1fr);
   gap: 24px;
   align-items: start;
   min-height: 112px;
@@ -375,19 +381,20 @@ a {
   line-height: 1.85;
 }
 
-.edit-button {
-  padding: 7px 0;
-  color: var(--muted);
-  border: 0;
-  border-bottom: 1px solid transparent;
-  background: transparent;
-  cursor: pointer;
-  font-size: 13px;
+.record-description > strong {
+  font-family: "Noto Serif SC", "Songti SC", serif;
+  font-size: 19px;
+  font-weight: 650;
 }
 
-.edit-button:hover {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+.record-description p {
+  margin: 5px 0 0;
+  color: var(--muted);
+}
+
+.text-button {
+  color: var(--accent-dark);
+  font-weight: 650;
 }
 
 .empty-state {
@@ -434,11 +441,6 @@ a {
   color: var(--muted);
 }
 
-.text-button {
-  color: var(--accent-dark);
-  font-weight: 650;
-}
-
 footer {
   display: flex;
   justify-content: space-between;
@@ -447,143 +449,6 @@ footer {
   color: var(--muted);
   border-top: 1px solid var(--line);
   font-size: 13px;
-}
-
-.composer {
-  width: min(620px, calc(100% - 32px));
-  max-height: min(760px, calc(100vh - 32px));
-  padding: 0;
-  overflow: auto;
-  background: transparent;
-  border: 0;
-}
-
-.composer::backdrop {
-  background: rgba(27, 29, 25, 0.48);
-  backdrop-filter: blur(6px);
-}
-
-.composer-card {
-  padding: 34px;
-  background: #fbf8f1;
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  border-radius: 24px;
-  box-shadow: var(--shadow);
-}
-
-.composer-heading {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 34px;
-}
-
-.composer-heading h2 {
-  font-size: 31px;
-}
-
-.icon-button {
-  display: grid;
-  width: 38px;
-  height: 38px;
-  place-items: center;
-  color: var(--muted);
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  font-size: 25px;
-  line-height: 1;
-}
-
-.icon-button:hover {
-  color: var(--ink);
-  background: var(--paper);
-}
-
-.field {
-  display: grid;
-  gap: 10px;
-  margin-bottom: 25px;
-}
-
-.field > span {
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.field input,
-.field textarea {
-  width: 100%;
-  padding: 14px 16px;
-  color: var(--ink);
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  outline: none;
-}
-
-.field textarea {
-  min-height: 156px;
-  resize: vertical;
-  line-height: 1.75;
-}
-
-.field input:focus,
-.field textarea:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(198, 83, 53, 0.09);
-}
-
-.field small {
-  justify-self: end;
-  color: var(--muted);
-}
-
-.composer-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding-top: 8px;
-}
-
-.composer-actions-right {
-  display: flex;
-  gap: 10px;
-  margin-left: auto;
-}
-
-.danger-button {
-  color: #9f352c;
-}
-
-.danger-button:hover {
-  color: #fff;
-  background: #9f352c;
-  border-color: #9f352c;
-}
-
-.toast {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
-  z-index: 20;
-  padding: 13px 18px;
-  color: #fffaf2;
-  background: var(--green);
-  border-radius: 999px;
-  box-shadow: var(--shadow);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(12px);
-  transition:
-    opacity 180ms ease,
-    transform 180ms ease;
-}
-
-.toast.visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .visually-hidden {
@@ -607,6 +472,10 @@ footer {
     min-height: 72px;
   }
 
+  .header-actions {
+    gap: 14px;
+  }
+
   .hero {
     grid-template-columns: 1fr;
     gap: 38px;
@@ -622,18 +491,14 @@ footer {
     width: 100%;
   }
 
-  .backup-panel {
+  .github-panel {
     align-items: stretch;
     flex-direction: column;
     margin-top: -20px;
   }
 
-  .backup-actions {
-    flex-wrap: wrap;
-  }
-
-  .backup-actions .secondary-button {
-    flex: 1;
+  .github-panel .secondary-button {
+    width: 100%;
   }
 
   .records-section {
@@ -685,34 +550,6 @@ footer {
     font-size: 15px;
   }
 
-  .edit-button {
-    grid-column: 2;
-    justify-self: start;
-    padding-top: 0;
-  }
-
-  .composer-card {
-    padding: 26px 20px 22px;
-    border-radius: 20px;
-  }
-
-  .composer-actions {
-    align-items: stretch;
-    flex-direction: column-reverse;
-  }
-
-  .composer-actions-right {
-    width: 100%;
-    margin: 0;
-  }
-
-  .composer-actions-right > * {
-    flex: 1;
-  }
-
-  .danger-button {
-    align-self: start;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
