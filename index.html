@@ -90,6 +90,25 @@
             </label>
           </div>
 
+          <div class="stats-panel" id="statsPanel"></div>
+
+          <div class="filter-toolbar">
+            <div class="date-range-filter">
+              <label>
+                <span>从</span>
+                <input type="date" id="dateFrom" />
+              </label>
+              <label>
+                <span>到</span>
+                <input type="date" id="dateTo" />
+              </label>
+              <button class="text-button" id="clearDateRange">清除</button>
+            </div>
+            <button class="collapse-toggle" id="collapseAll">全部折叠</button>
+          </div>
+
+          <nav class="month-nav" id="monthNav" aria-label="月份导航"></nav>
+
           <div id="recordsList" aria-live="polite"></div>
 
           <div class="empty-state" id="emptyState" hidden>
