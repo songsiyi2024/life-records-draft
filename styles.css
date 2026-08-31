@@ -513,6 +513,19 @@ a {
   font-size: 12px;
 }
 
+.record-content {
+  min-width: 0;
+}
+
+.record-meta {
+  display: inline-block;
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
 .record-description {
   padding-top: 5px;
   overflow-wrap: anywhere;

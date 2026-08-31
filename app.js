@@ -49,6 +49,10 @@
     return new Date(year, month - 1, day);
   }
 
+  function countChinese(text) {
+    return (text.match(/\p{Script=Han}/gu) || []).length;
+  }
+
   function escapeHtml(value) {
     return value
       .replaceAll("&", "&amp;")
@@ -95,6 +99,7 @@
     const date = parseLocalDate(record.date);
     const day = String(date.getDate()).padStart(2, "0");
     const weekday = weekdayFormatter.format(date).replace("星期", "周");
+    const chineseCount = countChinese(record.description);
 
     const paragraphs = record.description
       .split("\n")
@@ -109,7 +114,10 @@
           <strong>${day}</strong>
           <span>${weekday}</span>
         </time>
-        <div class="record-description">${paragraphs}</div>
+        <div class="record-content">
+          <time class="record-meta" datetime="${record.date}">${record.date} · ${chineseCount}字</time>
+          <div class="record-description">${paragraphs}</div>
+        </div>
       </article>
     `;
   }
