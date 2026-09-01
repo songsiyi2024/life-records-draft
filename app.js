@@ -53,6 +53,17 @@
     return (text.match(/\p{Script=Han}/gu) || []).length;
   }
 
+  function countRecordsWords(recordList) {
+    return recordList.reduce(
+      (total, record) => total + countChinese(record.description),
+      0,
+    );
+  }
+
+  function formatCount(value) {
+    return value.toLocaleString("zh-CN");
+  }
+
   function escapeHtml(value) {
     return value
       .replaceAll("&", "&amp;")
@@ -125,13 +136,14 @@
   function renderMonth(monthKey, monthRecords) {
     const [year, month] = monthKey.split("-");
     const isCollapsed = state.collapsedMonths.has(monthKey);
+    const monthWordCount = countRecordsWords(monthRecords);
     return `
       <section class="month-group ${isCollapsed ? "collapsed" : ""}"
                aria-label="${year}年${Number(month)}月"
                data-month="${monthKey}">
         <div class="month-label" role="button" tabindex="0" aria-expanded="${!isCollapsed}">
           <strong>${Number(month)}月</strong>
-          <span>${year} · ${String(monthRecords.length).padStart(2, "0")} 条</span>
+          <span>${year} · ${String(monthRecords.length).padStart(2, "0")} 条 · ${formatCount(monthWordCount)} 字</span>
         </div>
         <div class="month-records">
           ${monthRecords.map(renderRecord).join("")}
@@ -143,23 +155,62 @@
   function renderStats(filtered) {
     if (filtered.length === 0) return "";
 
-    const monthCounts = filtered.reduce((acc, r) => {
-      const month = r.date.slice(0, 7);
-      acc[month] = (acc[month] || 0) + 1;
+    const monthStats = filtered.reduce((acc, record) => {
+      const month = record.date.slice(0, 7);
+      if (!acc[month]) acc[month] = { records: 0, words: 0 };
+      acc[month].records += 1;
+      acc[month].words += countChinese(record.description);
       return acc;
     }, {});
 
+    const yearStats = filtered.reduce((acc, record) => {
+      const year = record.date.slice(0, 4);
+      if (!acc[year]) acc[year] = { records: 0, words: 0 };
+      acc[year].records += 1;
+      acc[year].words += countChinese(record.description);
+      return acc;
+    }, {});
+
+    const monthItems = Object.entries(monthStats)
+      .sort(([a], [b]) => b.localeCompare(a))
+      .map(([month, stats]) => `
+        <li>
+          <span>${month.replace("-", "年")}月 · ${stats.records} 条</span>
+          <strong>${formatCount(stats.words)} 字</strong>
+        </li>
+      `)
+      .join("");
+
+    const yearItems = Object.entries(yearStats)
+      .sort(([a], [b]) => b.localeCompare(a))
+      .map(([year, stats]) => `
+        <li>
+          <span>${year}年 · ${stats.records} 条</span>
+          <strong>${formatCount(stats.words)} 字</strong>
+        </li>
+      `)
+      .join("");
+
     const latest = filtered[0];
     const oldest = filtered[filtered.length - 1];
+    const totalWordCount = countRecordsWords(filtered);
 
     return `
       <div class="stats-grid">
         <div class="stat-item">
-          <strong>${filtered.length}</strong>
+          <strong>${formatCount(filtered.length)}</strong>
           <span>条记录</span>
         </div>
         <div class="stat-item">
-          <strong>${Object.keys(monthCounts).length}</strong>
+          <strong>${formatCount(totalWordCount)}</strong>
+          <span>总字数</span>
+        </div>
+        <div class="stat-item">
+          <strong>${Object.keys(yearStats).length}</strong>
+          <span>个年份</span>
+        </div>
+        <div class="stat-item">
+          <strong>${Object.keys(monthStats).length}</strong>
           <span>个月份</span>
         </div>
         <div class="stat-item">
@@ -171,6 +222,17 @@
           <span>最早记录</span>
         </div>
       </div>
+      <div class="stats-breakdown">
+        <section class="stats-breakdown-group" aria-labelledby="yearStatsTitle">
+          <h3 id="yearStatsTitle">年度字数</h3>
+          <ul class="stats-list">${yearItems}</ul>
+        </section>
+        <section class="stats-breakdown-group" aria-labelledby="monthStatsTitle">
+          <h3 id="monthStatsTitle">月度字数</h3>
+          <ul class="stats-list">${monthItems}</ul>
+        </section>
+      </div>
+      <p class="stats-note">字数按汉字统计，不含标点、空格和换行；搜索或日期筛选后会同步更新。</p>
     `;
   }
 
@@ -269,7 +331,6 @@
 
   initialize();
 })();
-
 
 
 
